@@ -1,0 +1,39 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# RStudio files
+.Rproj.user/
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# All WPP data
+Data_all/
+
+# Rate files
+rates/*
+
+# simulation results
+sim_results_socsim_*
+
+# Presimulation
+presim.omar
+presim.opop

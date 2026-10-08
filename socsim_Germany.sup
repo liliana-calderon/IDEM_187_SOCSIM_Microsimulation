@@ -1,0 +1,785 @@
+***************************************************************************
+* Supervisory file for SOCSIM microsimulation for Germany, 1950-2100
+
+***************************************************************************
+* This simulation uses as input age-specific fertility rates and
+* age-specific probabilities of death (qx)  
+* retrieved from the World Population Prospects 2024 
+* converted into SOCSIM format.
+***************************************************************************
+
+segments  152
+input_file presim
+
+marriage_after_childbirth 1 
+marriage_eval distribution
+marriage_queues 1
+hetfert 0
+bint 12
+
+***********************************************************************
+* Pre-simulation (100 years) to get stable population at 31-12-1949
+* Using WPP rates for 1950
+
+duration 1200
+include rates/Germanyfert1950
+include rates/Germanymort1950
+run
+
+* First simulation with actual fertility and mortality rates. 
+* Give population at 31-12-1950
+
+duration 12
+include rates/Germanyfert1950
+include rates/Germanymort1950
+run
+
+duration 12
+include rates/Germanyfert1951
+include rates/Germanymort1951
+run
+
+duration 12
+include rates/Germanyfert1952
+include rates/Germanymort1952
+run
+
+duration 12
+include rates/Germanyfert1953
+include rates/Germanymort1953
+run
+
+duration 12
+include rates/Germanyfert1954
+include rates/Germanymort1954
+run
+
+duration 12
+include rates/Germanyfert1955
+include rates/Germanymort1955
+run
+
+duration 12
+include rates/Germanyfert1956
+include rates/Germanymort1956
+run
+
+duration 12
+include rates/Germanyfert1957
+include rates/Germanymort1957
+run
+
+duration 12
+include rates/Germanyfert1958
+include rates/Germanymort1958
+run
+
+duration 12
+include rates/Germanyfert1959
+include rates/Germanymort1959
+run
+
+duration 12
+include rates/Germanyfert1960
+include rates/Germanymort1960
+run
+
+duration 12
+include rates/Germanyfert1961
+include rates/Germanymort1961
+run
+
+duration 12
+include rates/Germanyfert1962
+include rates/Germanymort1962
+run
+
+duration 12
+include rates/Germanyfert1963
+include rates/Germanymort1963
+run
+
+duration 12
+include rates/Germanyfert1964
+include rates/Germanymort1964
+run
+
+duration 12
+include rates/Germanyfert1965
+include rates/Germanymort1965
+run
+
+duration 12
+include rates/Germanyfert1966
+include rates/Germanymort1966
+run
+
+duration 12
+include rates/Germanyfert1967
+include rates/Germanymort1967
+run
+
+duration 12
+include rates/Germanyfert1968
+include rates/Germanymort1968
+run
+
+duration 12
+include rates/Germanyfert1969
+include rates/Germanymort1969
+run
+
+duration 12
+include rates/Germanyfert1970
+include rates/Germanymort1970
+run
+
+duration 12
+include rates/Germanyfert1971
+include rates/Germanymort1971
+run
+
+duration 12
+include rates/Germanyfert1972
+include rates/Germanymort1972
+run
+
+duration 12
+include rates/Germanyfert1973
+include rates/Germanymort1973
+run
+
+duration 12
+include rates/Germanyfert1974
+include rates/Germanymort1974
+run
+
+duration 12
+include rates/Germanyfert1975
+include rates/Germanymort1975
+run
+
+duration 12
+include rates/Germanyfert1976
+include rates/Germanymort1976
+run
+
+duration 12
+include rates/Germanyfert1977
+include rates/Germanymort1977
+run
+
+duration 12
+include rates/Germanyfert1978
+include rates/Germanymort1978
+run
+
+duration 12
+include rates/Germanyfert1979
+include rates/Germanymort1979
+run
+
+duration 12
+include rates/Germanyfert1980
+include rates/Germanymort1980
+run
+
+duration 12
+include rates/Germanyfert1981
+include rates/Germanymort1981
+run
+
+duration 12
+include rates/Germanyfert1982
+include rates/Germanymort1982
+run
+
+duration 12
+include rates/Germanyfert1983
+include rates/Germanymort1983
+run
+
+duration 12
+include rates/Germanyfert1984
+include rates/Germanymort1984
+run
+
+duration 12
+include rates/Germanyfert1985
+include rates/Germanymort1985
+run
+
+duration 12
+include rates/Germanyfert1986
+include rates/Germanymort1986
+run
+
+duration 12
+include rates/Germanyfert1987
+include rates/Germanymort1987
+run
+
+duration 12
+include rates/Germanyfert1988
+include rates/Germanymort1988
+run
+
+duration 12
+include rates/Germanyfert1989
+include rates/Germanymort1989
+run
+
+duration 12
+include rates/Germanyfert1990
+include rates/Germanymort1990
+run
+
+duration 12
+include rates/Germanyfert1991
+include rates/Germanymort1991
+run
+
+duration 12
+include rates/Germanyfert1992
+include rates/Germanymort1992
+run
+
+duration 12
+include rates/Germanyfert1993
+include rates/Germanymort1993
+run
+
+duration 12
+include rates/Germanyfert1994
+include rates/Germanymort1994
+run
+
+duration 12
+include rates/Germanyfert1995
+include rates/Germanymort1995
+run
+
+duration 12
+include rates/Germanyfert1996
+include rates/Germanymort1996
+run
+
+duration 12
+include rates/Germanyfert1997
+include rates/Germanymort1997
+run
+
+duration 12
+include rates/Germanyfert1998
+include rates/Germanymort1998
+run
+
+duration 12
+include rates/Germanyfert1999
+include rates/Germanymort1999
+run
+
+duration 12
+include rates/Germanyfert2000
+include rates/Germanymort2000
+run
+
+duration 12
+include rates/Germanyfert2001
+include rates/Germanymort2001
+run
+
+duration 12
+include rates/Germanyfert2002
+include rates/Germanymort2002
+run
+
+duration 12
+include rates/Germanyfert2003
+include rates/Germanymort2003
+run
+
+duration 12
+include rates/Germanyfert2004
+include rates/Germanymort2004
+run
+
+duration 12
+include rates/Germanyfert2005
+include rates/Germanymort2005
+run
+
+duration 12
+include rates/Germanyfert2006
+include rates/Germanymort2006
+run
+
+duration 12
+include rates/Germanyfert2007
+include rates/Germanymort2007
+run
+
+duration 12
+include rates/Germanyfert2008
+include rates/Germanymort2008
+run
+
+duration 12
+include rates/Germanyfert2009
+include rates/Germanymort2009
+run
+
+duration 12
+include rates/Germanyfert2010
+include rates/Germanymort2010
+run
+
+duration 12
+include rates/Germanyfert2011
+include rates/Germanymort2011
+run
+
+duration 12
+include rates/Germanyfert2012
+include rates/Germanymort2012
+run
+
+duration 12
+include rates/Germanyfert2013
+include rates/Germanymort2013
+run
+
+duration 12
+include rates/Germanyfert2014
+include rates/Germanymort2014
+run
+
+duration 12
+include rates/Germanyfert2015
+include rates/Germanymort2015
+run
+
+duration 12
+include rates/Germanyfert2016
+include rates/Germanymort2016
+run
+
+duration 12
+include rates/Germanyfert2017
+include rates/Germanymort2017
+run
+
+duration 12
+include rates/Germanyfert2018
+include rates/Germanymort2018
+run
+
+duration 12
+include rates/Germanyfert2019
+include rates/Germanymort2019
+run
+
+duration 12
+include rates/Germanyfert2020
+include rates/Germanymort2020
+run
+
+duration 12
+include rates/Germanyfert2021
+include rates/Germanymort2021
+run
+
+duration 12
+include rates/Germanyfert2022
+include rates/Germanymort2022
+run
+
+duration 12
+include rates/Germanyfert2023
+include rates/Germanymort2023
+run
+
+duration 12
+include rates/Germanyfert2024
+include rates/Germanymort2024
+run
+
+duration 12
+include rates/Germanyfert2025
+include rates/Germanymort2025
+run
+
+duration 12
+include rates/Germanyfert2026
+include rates/Germanymort2026
+run
+
+duration 12
+include rates/Germanyfert2027
+include rates/Germanymort2027
+run
+
+duration 12
+include rates/Germanyfert2028
+include rates/Germanymort2028
+run
+
+duration 12
+include rates/Germanyfert2029
+include rates/Germanymort2029
+run
+
+duration 12
+include rates/Germanyfert2030
+include rates/Germanymort2030
+run
+
+duration 12
+include rates/Germanyfert2031
+include rates/Germanymort2031
+run
+
+duration 12
+include rates/Germanyfert2032
+include rates/Germanymort2032
+run
+
+duration 12
+include rates/Germanyfert2033
+include rates/Germanymort2033
+run
+
+duration 12
+include rates/Germanyfert2034
+include rates/Germanymort2034
+run
+
+duration 12
+include rates/Germanyfert2035
+include rates/Germanymort2035
+run
+
+duration 12
+include rates/Germanyfert2036
+include rates/Germanymort2036
+run
+
+duration 12
+include rates/Germanyfert2037
+include rates/Germanymort2037
+run
+
+duration 12
+include rates/Germanyfert2038
+include rates/Germanymort2038
+run
+
+duration 12
+include rates/Germanyfert2039
+include rates/Germanymort2039
+run
+
+duration 12
+include rates/Germanyfert2040
+include rates/Germanymort2040
+run
+
+duration 12
+include rates/Germanyfert2041
+include rates/Germanymort2041
+run
+
+duration 12
+include rates/Germanyfert2042
+include rates/Germanymort2042
+run
+
+duration 12
+include rates/Germanyfert2043
+include rates/Germanymort2043
+run
+
+duration 12
+include rates/Germanyfert2044
+include rates/Germanymort2044
+run
+
+duration 12
+include rates/Germanyfert2045
+include rates/Germanymort2045
+run
+
+duration 12
+include rates/Germanyfert2046
+include rates/Germanymort2046
+run
+
+duration 12
+include rates/Germanyfert2047
+include rates/Germanymort2047
+run
+
+duration 12
+include rates/Germanyfert2048
+include rates/Germanymort2048
+run
+
+duration 12
+include rates/Germanyfert2049
+include rates/Germanymort2049
+run
+
+duration 12
+include rates/Germanyfert2050
+include rates/Germanymort2050
+run
+
+duration 12
+include rates/Germanyfert2051
+include rates/Germanymort2051
+run
+
+duration 12
+include rates/Germanyfert2052
+include rates/Germanymort2052
+run
+
+duration 12
+include rates/Germanyfert2053
+include rates/Germanymort2053
+run
+
+duration 12
+include rates/Germanyfert2054
+include rates/Germanymort2054
+run
+
+duration 12
+include rates/Germanyfert2055
+include rates/Germanymort2055
+run
+
+duration 12
+include rates/Germanyfert2056
+include rates/Germanymort2056
+run
+
+duration 12
+include rates/Germanyfert2057
+include rates/Germanymort2057
+run
+
+duration 12
+include rates/Germanyfert2058
+include rates/Germanymort2058
+run
+
+duration 12
+include rates/Germanyfert2059
+include rates/Germanymort2059
+run
+
+duration 12
+include rates/Germanyfert2060
+include rates/Germanymort2060
+run
+
+duration 12
+include rates/Germanyfert2061
+include rates/Germanymort2061
+run
+
+duration 12
+include rates/Germanyfert2062
+include rates/Germanymort2062
+run
+
+duration 12
+include rates/Germanyfert2063
+include rates/Germanymort2063
+run
+
+duration 12
+include rates/Germanyfert2064
+include rates/Germanymort2064
+run
+
+duration 12
+include rates/Germanyfert2065
+include rates/Germanymort2065
+run
+
+duration 12
+include rates/Germanyfert2066
+include rates/Germanymort2066
+run
+
+duration 12
+include rates/Germanyfert2067
+include rates/Germanymort2067
+run
+
+duration 12
+include rates/Germanyfert2068
+include rates/Germanymort2068
+run
+
+duration 12
+include rates/Germanyfert2069
+include rates/Germanymort2069
+run
+
+duration 12
+include rates/Germanyfert2070
+include rates/Germanymort2070
+run
+
+duration 12
+include rates/Germanyfert2071
+include rates/Germanymort2071
+run
+
+duration 12
+include rates/Germanyfert2072
+include rates/Germanymort2072
+run
+
+duration 12
+include rates/Germanyfert2073
+include rates/Germanymort2073
+run
+
+duration 12
+include rates/Germanyfert2074
+include rates/Germanymort2074
+run
+
+duration 12
+include rates/Germanyfert2075
+include rates/Germanymort2075
+run
+
+duration 12
+include rates/Germanyfert2076
+include rates/Germanymort2076
+run
+
+duration 12
+include rates/Germanyfert2077
+include rates/Germanymort2077
+run
+
+duration 12
+include rates/Germanyfert2078
+include rates/Germanymort2078
+run
+
+duration 12
+include rates/Germanyfert2079
+include rates/Germanymort2079
+run
+
+duration 12
+include rates/Germanyfert2080
+include rates/Germanymort2080
+run
+
+duration 12
+include rates/Germanyfert2081
+include rates/Germanymort2081
+run
+
+duration 12
+include rates/Germanyfert2082
+include rates/Germanymort2082
+run
+
+duration 12
+include rates/Germanyfert2083
+include rates/Germanymort2083
+run
+
+duration 12
+include rates/Germanyfert2084
+include rates/Germanymort2084
+run
+
+duration 12
+include rates/Germanyfert2085
+include rates/Germanymort2085
+run
+
+duration 12
+include rates/Germanyfert2086
+include rates/Germanymort2086
+run
+
+duration 12
+include rates/Germanyfert2087
+include rates/Germanymort2087
+run
+
+duration 12
+include rates/Germanyfert2088
+include rates/Germanymort2088
+run
+
+duration 12
+include rates/Germanyfert2089
+include rates/Germanymort2089
+run
+
+duration 12
+include rates/Germanyfert2090
+include rates/Germanymort2090
+run
+
+duration 12
+include rates/Germanyfert2091
+include rates/Germanymort2091
+run
+
+duration 12
+include rates/Germanyfert2092
+include rates/Germanymort2092
+run
+
+duration 12
+include rates/Germanyfert2093
+include rates/Germanymort2093
+run
+
+duration 12
+include rates/Germanyfert2094
+include rates/Germanymort2094
+run
+
+duration 12
+include rates/Germanyfert2095
+include rates/Germanymort2095
+run
+
+duration 12
+include rates/Germanyfert2096
+include rates/Germanymort2096
+run
+
+duration 12
+include rates/Germanyfert2097
+include rates/Germanymort2097
+run
+
+duration 12
+include rates/Germanyfert2098
+include rates/Germanymort2098
+run
+
+duration 12
+include rates/Germanyfert2099
+include rates/Germanymort2099
+run
+
+duration 12
+include rates/Germanyfert2100
+include rates/Germanymort2100
+run
