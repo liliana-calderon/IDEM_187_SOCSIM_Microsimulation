@@ -85,11 +85,11 @@ To install packages from Github, you can use the [`remotes`](https://cran.r-proj
 
 # The command is the same in {devtools} and {remotes}.
 # install.packages("remotes")
-remotes::install_github("MPIDR/rsocsim@v1.9.14")
+remotes::install_github("MPIDR/rsocsim@v1.9.18")
 
 # Using devtools
 # install.packages("devtools")
-devtools::install_github("MPIDR/rsocsim@v1.9.14")
+devtools::install_github("MPIDR/rsocsim@v1.9.18")
 ```
 
 ### 1.1.2 Installation binary package
@@ -175,7 +175,7 @@ As input fertility data, we use the whole range of the fertility rates by single
 
 To convert the annual rates to monthly rates we assume that the fertility rates are constant over the year and divide them by 12 (months). According to SOCSIM oversimplified, these are rates rather than probabilities. So multiplying a rate by the number of months in the age category gives the expected number of births that a woman who lives through the age category will experience.
 
-The are identical for all marital status, but are specified for single and married women in the rate files. Other marital status (divorced, widowed, cohabiting) follow SOCSIM's rate default rules. 
+They are identical for all marital status, but are specified for single and married women in the rate files. Other marital status (divorced, widowed, cohabiting) follow SOCSIM's rate default rules. 
 
 For this exercise, we will use age-specific fertility rates all birth orders combined by calendar year and single age of the mother for a selected country from the WPP 2024. The fertility data downloaded from the [WPP website](https://population.un.org/wpp/Download/Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_Fertility_by_Age1.csv.gz/), filtered for one country and keeping only relevant variables is provided in `Data/WPP2024_Fertility_Germany.csv`. 
 
@@ -189,7 +189,7 @@ write_socsim_fertility_rates_WPP(Country = "Germany")
 
 As input mortality data, SOCSIM requires probabilities of death (qx) from period life tables. We use the whole age range of the single age life tables provided by the WPP 2024 [0-100]. The final age interval 100 is limited to one year, i.e. [100-101). Originally, SOCSIM had an upper bound of 100 years, but in `rsocsim` the maximum age has been extended to 200 years, in case mortality data exceeds the 100 limit. 
 
-To convert the annual WPP probabilities to monthly 'SOCSIM' probabilities, we assume that the probability of dying is constant over the year and use the formula $1-(1-_nq_x)^{1/n}$ proposed by Kenneth Watcher [@wachter2014essential, p. 53]. For the final age interval 100, monthly probabilities are equal to 1/12. The probabilities of death are identical for all marital status of each sex, and are only specified for single women and single men in the rate files. Other marital status will follow SOCSIM's rate default rules. 
+To convert the annual WPP probabilities to monthly 'SOCSIM' probabilities, we assume that the probability of dying is constant over the year and use the formula $1-(1-_nq_x)^{1/n}$ proposed by Kenneth Watcher [@wachter2014essential, p. 53]. For the final age interval 100, monthly probabilities are equal to 1 so that everyone dies within the year. The probabilities of death are identical for all marital status of each sex, and are only specified for single women and single men in the rate files. Other marital status will follow SOCSIM's rate default rules. 
 
 The WPP2024 methods used to estimate mortality and life tables vary across countries depending on the type and quality of available empirical data. For further details, see the Methodology of the United Nations population estimates and projections [@UNWPP2024]. 
 
@@ -204,7 +204,7 @@ write_socsim_mortality_rates_WPP(Country = "Germany")
 
 ### 2.2.3. Write the rate files for other countries
 
-To run the analysis for a different country, first download the data for all countries using the function `download_WPP2024()` in `functions_WPP2024.R`. You can then use the function `filter_WPP2024()` to select a different country ('Location') and keep only the relevant variables. If you want to select a different time period, also indicate the minimum and maximum years as arguments of the function. Once the data have been filtered, use the `write_socsim_mortality_rates_WPP` and `write_socsim_mortality_rates_WPP` for the new country. 
+To run the analysis for a different country, first download the data for all countries using the function `download_WPP2024()` in `functions_WPP2024.R`. You can then use the function `filter_WPP2024()` to select a different country ('Location') and keep only the relevant variables. If you want to select a different time period, also indicate the minimum and maximum years as arguments of the function. Once the data have been filtered, use the `write_socsim_fertility_rates_WPP` and `write_socsim_mortality_rates_WPP` for the new country. 
 
 ```{r filter_WPP, eval=FALSE}
 # To read gz files directly, fread() requires `R.utils` package
@@ -216,19 +216,21 @@ source("functions_WPP2024.R")
 # Download WPP 2024 data if it is not already downloaded
 download_WPP2024()
 
-# Filter WPP 2024 data for Germany 
-filter_WPP2024(Country = "Germany", 
+# Filter WPP 2024 data for the selected country
+Country <- "Germany"
+
+filter_WPP2024(Country = Country, 
                Year_Min = 1950, 
                Year_Max = 2100)
 ```
 
 ## 2.3. Create initial population and marriage files
 
-Now that we have the rate files, let's create the initial population (.opop) and marriage (.opop) files. For practical reasons, we will use a small initial population to reduce the time required to run the simulation and to compute the subsequent code. The initial .opop will have a size of 1000, with randomly assigned sex and dates of birth, and group 1 for all. Other columns will be completed during the simulation. The initial .omar will be an empty file.
+Now that we have the rate files, let's create the initial population (`.opop`) and marriage (`.omar`) files. For practical reasons, we will use a medium-sized initial population to reduce the time required to run the simulation and to compute the subsequent code. The initial .opop will have a size of 1000, with randomly assigned sex and dates of birth, and group 1 for all. Other columns will be completed during the simulation. The initial .omar will be an empty file.
 
 ```{r init_opop}
 # Set size of initial population
-size_opop <-  20000
+size_opop <-  10000
 
 # Create data.frame with 14 columns and nrows = size_opop
 presim.opop <- setNames(data.frame(matrix(data = 0, ncol = 14, nrow = size_opop)), 
@@ -389,8 +391,11 @@ year_range_fert <- min(year_breaks_fert):(max(year_breaks_fert) - 1)
 # Age breaks of fertility rates. Extract all the unique numbers from the intervals 
 age_breaks_fert <- unique(as.numeric(str_extract_all(as.character(asfr_sim$age), "\\d+", simplify = T)))
 
+# Type the name of the country as listed in the WPP 2024 (e.g., "Germany")
+Country <- "Germany"
+
 # Load the WPP fertility data used to write the input rates and compute age-specific fertility rates by 5-year age groups
-fertility_Germany <- fread("Data/WPP2024_Fertility_Germany.csv")
+fertility_Germany <- fread(paste0("Data/WPP2024_Fertility_", Country, ".csv"))
 
 WPP_fert <- fertility_Germany %>% 
   filter(year %in% year_range_fert) %>% 
@@ -427,8 +432,11 @@ year_range_mort <- min(year_breaks_mort):(max(year_breaks_mort) - 1)
 # Age breaks of mortality rates. Extract all the unique numbers from the intervals 
 age_breaks_mort <- unique(as.numeric(str_extract_all(as.character(asmr_sim$age), "\\d+", simplify = T)))
 
+# Type the name of the country as listed in the WPP 2024 (e.g., "Germany")
+Country <- "Germany"
+
 # Load mortality data used as input and compute age-specific mortality rates by 5-year age groups
-mortality_Germany <- fread("Data/WPP2024_Mortality_Germany.csv")
+mortality_Germany <- fread(paste0("Data/WPP2024_Mortality_", Country, ".csv"))
 
 # To facilitate comparison, we will use the central mortality rates (mx) instead of the probabilities (qX)
 
@@ -490,8 +498,6 @@ Overall, the fertility and mortality rates by five-year age groups derived from 
 
 # 3. What can you do with simulation output? Example: estimates of kin loss and availability
 
-> Prepared by Mallika Snyder for the PAA 2023 Member Initiated Meeting
-
 ### Objectives
 
 1. Learn how to analyse SOCSIM output
@@ -502,7 +508,7 @@ After running our simulation code, SOCSIM provides us with a synthetic genealogy
 
 One advantage of using a tool like SOCSIM is that we can identify extended kin networks, especially for more distant kin that would be hard to link together using a census or a household survey. For example, how straightforward would it be to find an individual's great-grandmother in a household survey, assuming odds of co-residence are not high? Of course, some kinds of kin are easier to identify than others, based on the information we have in SOCSIM. When identifying kin, we use kinship relationships by direct consanguinity, such as parents and children, or affinity, such as spouses. This is the principle behind the `retrieve_kin()` function included in this package, which can be used to identify kin from a variety of kin relationships (parents, children, grandparents, spouses, and much more). You can read the full documentation for this function by typing `?retrieve_kin` into your RStudio console. An important note is that the kinship terms used in this function are currently Western-centric: other regions may have very different kinship systems, which may influence kin availability. 
  
-As well as allowing us to identify networks more easily, SOCSIM also provides us with valuable information about the timing of vital events such as births, deaths, and marriages, in these networks. This can help us to relate changes in the vital rates that go into SOCSIM to changes in the networks available to our simulated peoplem, often at a very fine temporal level (months or years). In this workshop, we will focus on just one example, kin loss, but there are many other ways to use SOCSIM to study this and other questions about kinship dynamics.
+As well as allowing us to identify networks more easily, SOCSIM also provides us with valuable information about the timing of vital events such as births, deaths, and marriages, in these networks. This can help us to relate changes in the vital rates that go into SOCSIM to changes in the networks available to our simulated people, often at a very fine temporal level (months or years). In this workshop, we will focus on just one example, kin loss, but there are many other ways to use SOCSIM to study this and other questions about kinship dynamics.
 
 In previous research, SOCSIM has been especially helpful for studying kin loss in connection with mortality change [@zagheni_impact_2011; @verdery_tracking_2020; @snyder_estimates_2022]. Here we will focus on a simple example, changes in the rate of experiencing the loss of a relative over time. We will define our reference group as women aged 25-39 and alive in a given year. Thus, the sample frame will change in each year. Note that the denominator is all women, not just those with a relative alive.
 
@@ -679,7 +685,58 @@ scale_x_continuous(breaks = seq(1950, 2090,by = 20))+
 
 In fact, grandparents and, to a lesser extent, parents are the relatives whose availability has increased significantly in recent decades. On the other hand, we observe a decrease in the availability of children, spouses and siblings, which is related to a decline in fertility rates and resulting decline in marriage rates, as per our partner matching framework.
 
-# 4. Learn more
+
+# 4. Run a simulation for another country
+
+Now adapt the German simulation to another country or area included in the WPP 2024 data. Run the simulation for the period **1950–2100**.
+
+The purpose of this exercise is not only to run the model, but also to identify which parts of the workflow depend on the selected country and which parts can be reused unchanged.
+
+Follow these steps:
+
+1. **Choose a country or area** available in the WPP 2024 data.
+
+   Make sure that you use the country or area name exactly as it appears in the WPP `Location` variable.
+
+2. **Download and filter the WPP data** for your selected country using the functions provided in `functions_WPP2024.R`.
+
+3. **Check the filtered files** created in the `Data` folder. Confirm that they contain:
+   - fertility data by year and single ag
+   - mortality data by year, sex, and single age
+   - all years from 1950 to 2100.
+
+4. **Create the SOCSIM rate files** for your selected country using the functions provided in `functions_rates.R`.
+
+5. **Check the generated rate files** in the `rates` folder. 
+
+6. **Create a new supervisory file** for your selected country, using `socsim_Germany.sup` as a template. Decide which parts of the file need to be changed and which parts should remain unchanged. In particular, check:
+
+   - the country name in the comments
+   - the country prefix in every fertility and mortality rate-file path;
+   - the number of simulation segment
+   - the duration of each segment
+   - the initial population file
+
+   Since this exercise uses the same simulation period as the Germany example—1950 to 2100—the number and duration of the segments should remain unchanged.
+
+7. **Run the simulation** using your new supervisory file.
+
+   Before running the simulation, check that:
+
+   - the supervisory file refers to the correct rate-file names;
+   - the referenced rate files exist in the `rates` folder;
+   - there is a fertility and a mortality file for every year from 1950 to 2100.
+
+8. **Read and inspect the output** population and marriage files.
+
+   Confirm that the simulation has produced the expected output files and that they can be imported into R.
+
+9. **Optional extension:** Adapt the validation and plotting code from the Germany example to compare the SOCSIM-generated rates with the WPP input rates for your selected country.
+
+   Identify which parts of the code still refer specifically to Germany and determine what needs to be changed.
+
+
+# 5. Learn more
 
 The 'SOCSIM Oversimplified' manual written by Carl @mason2016socsim is a great starting point to learn more about how SOCSIM works: https://lab.demog.berkeley.edu/socsim/CurrentDocs/socsimOversimplified.pdf. 
 
